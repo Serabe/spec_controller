@@ -24,7 +24,7 @@ RSpec.describe MoviesController, :type => :controller do
   # Movie. As you add validations to Movie, be sure to
   # adjust the attributes here as well.
   let(:valid_attributes) {
-    skip("Add a hash of attributes valid for your model")
+    FactoryGirl.attributes_for :movie
   }
 
   let(:invalid_attributes) {
@@ -68,7 +68,7 @@ RSpec.describe MoviesController, :type => :controller do
   end
 
   describe "POST create" do
-    describe "with valid params" do
+    context "with valid params" do
       it "creates a new Movie" do
         expect {
           post :create, {:movie => valid_attributes}, valid_session
@@ -103,14 +103,18 @@ RSpec.describe MoviesController, :type => :controller do
   describe "PUT update" do
     describe "with valid params" do
       let(:new_attributes) {
-        skip("Add a hash of attributes valid for your model")
+        {title: new_title}
+      }
+
+      let(:new_title) {
+        "New title"
       }
 
       it "updates the requested movie" do
         movie = Movie.create! valid_attributes
         put :update, {:id => movie.to_param, :movie => new_attributes}, valid_session
         movie.reload
-        skip("Add assertions for updated state")
+        expect(movie.title).to eq(new_title)
       end
 
       it "assigns the requested movie as @movie" do
